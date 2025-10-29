@@ -113,6 +113,17 @@ public class Library {
         return availableBooks;
     }
 
+    public List<Movie> getAvailableMovies()
+    { List<Movie> availableMovies = new ArrayList<>();
+        for (Item item : items.values())
+        { if (item instanceof Movie && item.isAvailable()) { availableMovies.add((Movie) item);
+        } } return availableMovies; }
+    public List<Movie> searchMoviesByDirector(String director)
+    { List<Movie> movieResults = new ArrayList<>(); List<Item> allResults = searchByCreator(director);
+        for (Item item : allResults) { if (item instanceof Movie) { movieResults.add((Movie) item); }
+        } return movieResults; }
+
+
     // Member management
     public boolean addMember(Member member) {
         if (!members.containsKey(member.getMemberId())) {
@@ -192,6 +203,16 @@ public class Library {
         }
         return bookResults;
     }
+    public List<Movie> searchMovies(String query) {
+        List<Movie> movieResults = new ArrayList<>();
+        List<Item> allResults = searchItems(query);
+        for (Item item : allResults) {
+            if (item instanceof Movie) {
+                movieResults.add((Movie) item);
+            }
+        }
+        return movieResults;
+    }
 
     // Borrow/Return operations
     public boolean borrowItem(String memberId, String itemId) {
@@ -262,7 +283,7 @@ public class Library {
         logger.info("Starting data save operation");
 
         // Create data directory if it doesn't exist
-        java.io.File dataDir = new java.io.File("data");
+        File dataDir = new File("data");
         if (!dataDir.exists()) {
             dataDir.mkdirs();
             logger.info("Created data directory");
@@ -329,7 +350,7 @@ public class Library {
         logger.info("Starting data load operation");
 
         // Create data directory if it doesn't exist
-        java.io.File dataDir = new java.io.File("data");
+        File dataDir = new File("data");
         if (!dataDir.exists()) {
             dataDir.mkdirs();
             logger.info("Created data directory");

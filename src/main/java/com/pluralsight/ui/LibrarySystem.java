@@ -8,6 +8,7 @@ import com.pluralsight.model.Member;
 import com.pluralsight.service.Library;
 import com.pluralsight.service.Logger;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
@@ -170,24 +171,138 @@ public class LibrarySystem {
 
     // PLACEHOLDER MOVIE MENU (Students will implement)
     private void movieMenu() {
-        System.out.println("\n=== Movie Menu ===");
-        System.out.println("TODO: Movie menu implementation");
-        System.out.println("This menu should include:");
-        System.out.println("- View all movies");
-        System.out.println("- View available movies");
-        System.out.println("- Search movies by title");
-        System.out.println("- Search movies by director");
-        System.out.println("- Search movies by genre");
-        System.out.println("- Borrow movie");
-        System.out.println("- Return movie");
-        System.out.println("- Show movie duration");
-        System.out.println();
-        System.out.println("Press Enter to continue...");
-        scanner.nextLine();
+        boolean inMovieMenu = true;
+        while (inMovieMenu) {
+            System.out.println("\n=== Movie Menu ===");
+            System.out.println("TODO: Movie menu implementation");
+            System.out.println("This menu should include:");
+            System.out.println("1. - View all movies");
+            System.out.println("2. - View available movies");
+            System.out.println("3. - Search movies by title");
+            System.out.println("4. - Search movies by director");
+            System.out.println("5. - Search movies by genre");
+            System.out.println("6. - Borrow movie");
+            System.out.println("7. - Return movie");
+            System.out.println("8. - Show movie duration");
+            System.out.println();
+            System.out.println("Press Enter to continue...");
+            scanner.nextLine();
+
+            int choice = getChoice();
+            logger.debug("User selected movie menu option: " + choice);
+
+            switch (choice) {
+                case 1:
+                    viewAllMovies();
+                    break;
+                case 2:
+                    viewAvailableMovies();
+                    break;
+                case 3:
+                    searchMovies();
+                    break;
+                case 4:
+                    searchByDirector();
+                    break;
+                case 5:
+                    searchMoviesByGenre();
+                    break;
+                case 6:
+                    borrowSpecificMovies();
+                    break;
+                case 7:
+                    returnSpecificMovies();
+                    break;
+                case 8:
+                    inMovieMenu = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+
 
         // TODO: Students should implement movie-specific functionality here
         // Similar structure to bookMenu() but for Movie objects
         // Should handle Movie-specific fields like duration
+    }
+
+    private void returnSpecificMovies() {
+        System.out.print("Enter member ID: ");
+        String memberId = scanner.nextLine();
+
+        System.out.print("Enter movie ID: ");
+        String movieId = scanner.nextLine();
+
+        if (library.returnItem(memberId, movieId)) {
+            System.out.println("Movie returned successfully!");
+        } else {
+            System.out.println("Unable to return movie. Please check member ID and movie ID.");
+        }
+    }
+
+    private void borrowSpecificMovies() {
+        System.out.print("Enter member ID: ");
+        String memberId = scanner.nextLine();
+
+        System.out.print("Enter movie ID: ");
+        String movieId = scanner.nextLine();
+
+        if (library.borrowItem(memberId, movieId)) {
+            System.out.println("Movie borrowed successfully!");
+        } else {
+            System.out.println("Unable to borrow movie. Please check member ID, movie ID, and movie availability.");
+        }
+    }
+
+    private void searchMoviesByGenre() {
+        System.out.print("Enter genre: ");
+        String genre = scanner.nextLine();
+
+        List<Item> results = library.searchByGenre(genre);
+        if (results.isEmpty()) {
+            System.out.println("No Movies found in genre: " + genre);
+        } else {
+            System.out.println("\n=== Movies in " + genre + " ===");
+            for (Item movie : results) {
+                System.out.println(movie);
+            }
+        }
+    }
+
+    private void searchByDirector() {
+        System.out.print("Enter director name: ");
+        String director = scanner.nextLine();
+
+        List<Movie> results = library.searchMoviesByDirector(director);
+        if (results.isEmpty()) {
+            System.out.println("No movies found by director: " + director);
+        } else {
+            System.out.println("\n=== Movies by " + director + " ===");
+            for (Movie movie : results) {
+                System.out.println(movie);
+            }
+        }
+    }
+
+    private void searchMovies() {
+    }
+
+    private void viewAvailableMovies() {
+    List<Movie> availableMovies = library.getAvailableMovies();
+    if (availableMovies.isEmpty()) {
+        System.out.println("No movies currently available.");
+        return;
+    }
+    System.out.println("\n=== Available Movies ===");
+    for (Movie movie : availableMovies) {
+        System.out.println(movie);
+    }
+    System.out.println("\n=== All Movies ===");
+    for (Movie movie : movies) {
+        System.out.println(movie);
+    }
+
     }
 
     // PLACEHOLDER MAGAZINE MENU (Students will implement)
