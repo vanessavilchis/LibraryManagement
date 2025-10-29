@@ -43,6 +43,34 @@ public class Library {
         logger.debug("Retrieved all items, count: " + items.size());
         return new ArrayList<>(items.values());
     }
+    public List<Movie> getAllMovies() {
+        List<Movie> movies = new ArrayList<>();
+        for (Item item : items.values()) {
+            if (item instanceof Movie) {
+                movies.add((Movie) item);
+            }
+        }
+        return movies;
+    }
+    public List<Movie> getAvailableMovies() {
+        List<Movie> availableMovies = new ArrayList<>();
+        for (Item item : items.values()) {
+            if (item instanceof Movie && item.isAvailable()) {
+                availableMovies.add((Movie) item);
+            }
+        }
+        return availableMovies;
+    }
+    public List<Movie> searchMoviesByDirector(String director) {
+        List<Movie> movieResults = new ArrayList<>();
+        List<Item> allResults = searchByCreator(director);
+        for (Item item : allResults) {
+            if (item instanceof Movie) {
+                movieResults.add((Movie) item);
+            }
+        }
+        return movieResults;
+    }
 
     public List<Item> getAvailableItems() {
         List<Item> available = new ArrayList<>();
