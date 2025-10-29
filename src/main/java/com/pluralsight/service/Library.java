@@ -125,17 +125,11 @@ public class Library {
         return results;
     }
 
-    public List<Item> searchByGenre(String genre) {
-        List<Item> results = new ArrayList<>();
-        for (Item item : items.values()) {
-            if (!item.getGenre().toLowerCase()) {
-            } else {
-                results.add(item);
-            }
-        }
-        logger.info("Genre search for '" + genre + "', results: " + results.size());
-        return results;
-    }
+    public List<Item> searchByGenre(String genre)
+    { List<Item> results = new ArrayList<>();
+        for (Item item : items.values()) { if (item.getGenre().equalsIgnoreCase(genre))
+        { results.add(item); } } logger.info("Genre search for '" + genre + "', results: " + results.size());
+        return results; }
 
     public List<Item> searchByCreator(String creator) {
         List<Item> results = new ArrayList<>();
